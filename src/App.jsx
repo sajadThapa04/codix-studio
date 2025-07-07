@@ -142,7 +142,7 @@ function App() {
               children: [
                 {
                   index: true, // This will match /admin
-                  element: <Navigate to="/admin/dashboard" replace />,
+                  element: <Navigate to="/admin" replace />,
                 },
                 {
                   path: "dashboard",

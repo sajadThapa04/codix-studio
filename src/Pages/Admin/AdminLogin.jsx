@@ -21,8 +21,8 @@ function AdminLogin() {
 
       if (adminLogin.fulfilled.match(resultAction)) {
         setSuccess("Login successful! Redirecting...");
-        // Redirect to admin dashboard after successful login
-        setTimeout(() => navigate("/admin/dashboard"), 1500);
+        // Redirect to admin after successful login
+        setTimeout(() => navigate("/admin"), 1500);
       } else if (adminLogin.rejected.match(resultAction)) {
         setError(resultAction.payload || "Login failed. Please try again.");
       }
