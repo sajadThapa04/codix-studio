@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { ErrorMessage } from "../../Ui";
+import { Link, useNavigate } from "react-router-dom";
+import { ErrorMessage, Modal } from "../../Ui";
 import {
   FaSearch,
   FaPlus,
@@ -9,16 +9,22 @@ import {
   FaEye,
   FaClock,
   FaImage,
+  FaExclamationTriangle,
 } from "react-icons/fa";
 import { useGetAllBlogs } from "../../../Hooks/Blog/blogHooks";
 import { motion } from "framer-motion";
 import { useOutletContext } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../../Stores/Slices/client.slices";
 
 const BlogPage = () => {
   const { darkMode } = useOutletContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const blogsPerPage = 6;
+  const navigate = useNavigate();
+  const currentUser = useSelector(selectCurrentUser);
 
   const {
     data: responseData = {},
@@ -47,11 +53,23 @@ const BlogPage = () => {
     setSearchTerm(e.target.value);
   };
 
+  const handleCreatePostClick = (e) => {
+    if (!currentUser) {
+      e.preventDefault();
+      setShowAuthModal(true);
+    }
+  };
+
+  const handleNavigateToLogin = () => {
+    setShowAuthModal(false);
+    navigate("/login", { state: { from: "/blog/create" } });
+  };
+
   return (
     <div className={`min-h-screen ${darkMode ? "bg-gray-900" : "bg-gray-50"}`}>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
-          {/* Header and Search - Optimized for dark mode */}
+          {/* Header and Search */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <h1
               className={`text-3xl font-bold ${
@@ -80,6 +98,7 @@ const BlogPage = () => {
               </form>
               <Link
                 to="/blog/create"
+                onClick={handleCreatePostClick}
                 className={`flex items-center justify-center px-4 py-2 rounded-lg transition-colors ${
                   darkMode
                     ? "bg-blue-600 hover:bg-blue-700 text-white"
@@ -93,10 +112,10 @@ const BlogPage = () => {
 
           {/* Error State */}
           {isError && (
-            <div
-              className={`mb-6 ${darkMode ? "text-red-300" : "text-red-600"}`}>
-              {error?.message || "Failed to load blog posts"}
-            </div>
+            <ErrorMessage
+              message={error?.message || "Failed to load blog posts"}
+              darkMode={darkMode}
+            />
           )}
 
           {/* Loading State */}
@@ -124,6 +143,7 @@ const BlogPage = () => {
               {!searchTerm && (
                 <Link
                   to="/blog/create"
+                  onClick={handleCreatePostClick}
                   className={`inline-block px-4 py-2 rounded-lg transition-colors ${
                     darkMode
                       ? "bg-blue-600 hover:bg-blue-700 text-white"
@@ -160,18 +180,79 @@ const BlogPage = () => {
           )}
         </div>
       </div>
+
+      {/* Authentication Modal */}
+      <Modal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        title="Authentication Required"
+        darkMode={darkMode}>
+        <div className="space-y-6">
+          <div className="flex items-start">
+            <div
+              className={`flex-shrink-0 p-2 rounded-full ${
+                darkMode ? "bg-yellow-900/30" : "bg-yellow-100"
+              }`}>
+              <FaExclamationTriangle
+                className={`h-6 w-6 ${
+                  darkMode ? "text-yellow-400" : "text-yellow-600"
+                }`}
+              />
+            </div>
+            <div className="ml-4">
+              <h3
+                className={`text-lg font-medium ${
+                  darkMode ? "text-white" : "text-gray-900"
+                }`}>
+                Sign in required
+              </h3>
+              <p
+                className={`mt-1 text-sm ${
+                  darkMode ? "text-gray-300" : "text-gray-600"
+                }`}>
+                You need to be logged in to create a blog post. Please sign in
+                to continue.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6">
+            <button
+              onClick={() => setShowAuthModal(false)}
+              className={`px-4 py-2 rounded-lg ${
+                darkMode
+                  ? "bg-gray-700 hover:bg-gray-600"
+                  : "bg-gray-100 hover:bg-gray-200"
+              } ${
+                darkMode ? "text-white" : "text-gray-700"
+              } transition-colors`}>
+              Cancel
+            </button>
+            <button
+              onClick={handleNavigateToLogin}
+              className={`px-4 py-2 rounded-lg ${
+                darkMode
+                  ? "bg-blue-600 hover:bg-blue-700"
+                  : "bg-blue-600 hover:bg-blue-700"
+              } text-white transition-colors`}>
+              Sign in
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
 
 const BlogCard = ({ blog, darkMode }) => {
+  const [imageError, setImageError] = useState(false);
+
   if (!blog) return null;
 
   const displayContent = blog.content || blog.excerpt || "No content available";
   const likeCount = Array.isArray(blog.likes) ? blog.likes.length : 0;
   const viewCount = blog.views || 0;
   const readingTime = blog.readingTime || "1 min read";
-  const [imageError, setImageError] = useState(false);
 
   const handleImageError = () => {
     setImageError(true);
@@ -191,7 +272,7 @@ const BlogCard = ({ blog, darkMode }) => {
       className={`rounded-lg overflow-hidden h-full flex flex-col shadow-md ${
         darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
       }`}>
-      {/* Cover Image or Placeholder */}
+      {/* Cover Image */}
       <div className="relative h-48 overflow-hidden">
         {!imageError && blog.coverImage?.url ? (
           <motion.img
@@ -244,7 +325,7 @@ const BlogCard = ({ blog, darkMode }) => {
 
         {/* Title */}
         <motion.h2
-          whileHover={{ color: darkMode ? "#93c5fd" : "#2563eb" }} // light-blue-300 or blue-600
+          whileHover={{ color: darkMode ? "#93c5fd" : "#2563eb" }}
           className={`text-xl font-bold mb-2 line-clamp-2 ${
             darkMode ? "text-white" : "text-gray-900"
           }`}>

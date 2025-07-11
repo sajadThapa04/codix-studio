@@ -94,22 +94,23 @@ const ChartSection = ({ darkMode }) => {
       .selectAll("text")
       .style("fill", darkMode ? "#e5e7eb" : "#4b5563");
 
-    // Grid lines
-    chartGroup
-      .append("g")
-      .attr("class", "grid")
-      .call(
-        d3
-          .axisLeft(yScale)
-          .tickSize(-width + margin.left + margin.right)
-          .tickFormat("")
-      )
-      .selectAll("line")
-      .style(
-        "stroke",
-        darkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"
-      )
-      .style("stroke-dasharray", "3,3");
+    // Replace the grid lines section with this code:
+    const gridGroup = chartGroup.append("g").attr("class", "grid");
+
+    // Manually add grid lines at specific positions (20, 40, 60, 80)
+    [20, 40, 60, 80].forEach((value) => {
+      gridGroup
+        .append("line")
+        .attr("x1", 0)
+        .attr("y1", yScale(value))
+        .attr("x2", width - margin.left - margin.right)
+        .attr("y2", yScale(value))
+        .style(
+          "stroke",
+          darkMode ? "rgba(229, 231, 235, 0.1)" : "rgba(0, 0, 0, 0.1)"
+        )
+        .style("stroke-dasharray", "3,3");
+    });
 
     // Create grouped bars
     const categories = chartGroup
@@ -120,7 +121,7 @@ const ChartSection = ({ darkMode }) => {
       .attr("class", "category")
       .attr("transform", (d) => `translate(${xScale(d.category)},0)`);
 
-    // With online presence bars
+    // With online presence bars (blue)
     categories
       .append("rect")
       .attr("class", "bar-with")
@@ -143,7 +144,7 @@ const ChartSection = ({ darkMode }) => {
         chartGroup.selectAll(".tooltip").remove();
       });
 
-    // Without online presence bars
+    // Without online presence bars (red)
     categories
       .append("rect")
       .attr("class", "bar-without")
@@ -186,7 +187,9 @@ const ChartSection = ({ darkMode }) => {
         .attr("height", 30)
         .attr("fill", darkMode ? "#374151" : "#f3f4f6")
         .attr("rx", 4)
-        .attr("ry", 4);
+        .attr("ry", 4)
+        .style("stroke", darkMode ? "#4f46e5" : "#3b82f6")
+        .style("stroke-width", "1px");
 
       tooltip
         .append("text")
@@ -194,6 +197,7 @@ const ChartSection = ({ darkMode }) => {
         .attr("dy", -30)
         .style("fill", darkMode ? "#f3f4f6" : "#111827")
         .style("font-size", "10px")
+        .style("font-weight", "600")
         .text(label);
 
       tooltip
@@ -202,6 +206,7 @@ const ChartSection = ({ darkMode }) => {
         .attr("dy", -15)
         .style("fill", darkMode ? "#f3f4f6" : "#111827")
         .style("font-size", "12px")
+        .style("font-weight", "bold")
         .text(`${value}%`);
     }
 
@@ -215,12 +220,58 @@ const ChartSection = ({ darkMode }) => {
       .style("font-weight", "bold")
       .style("fill", darkMode ? "#f3f4f6" : "#111827")
       .text("Impact of Online Presence on Business Metrics");
+
+    // Legend
+    const legend = svg
+      .append("g")
+      .attr(
+        "transform",
+        `translate(${width - margin.right - 150},${margin.top})`
+      );
+
+    legend
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", 12)
+      .attr("height", 12)
+      .attr("rx", 2)
+      .attr("ry", 2)
+      .attr("fill", colorScale("withPresence"));
+
+    legend
+      .append("text")
+      .attr("x", 20)
+      .attr("y", 10)
+      .style("font-size", "12px")
+      .style("fill", darkMode ? "#e5e7eb" : "#4b5563")
+      .text("With Online Presence");
+
+    legend
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", 20)
+      .attr("width", 12)
+      .attr("height", 12)
+      .attr("rx", 2)
+      .attr("ry", 2)
+      .attr("fill", colorScale("withoutPresence"));
+
+    legend
+      .append("text")
+      .attr("x", 20)
+      .attr("y", 30)
+      .style("font-size", "12px")
+      .style("fill", darkMode ? "#e5e7eb" : "#4b5563")
+      .text("Without Online Presence");
   }, [darkMode]);
 
   return (
-    <div className={`p-4 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`}>
-      <div ref={chartRef} className="w-full">
-        <svg ref={svgRef} className="w-full" />
+    <div className={`p-6 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`}>
+      <div className="max-w-7xl mx-auto">
+        <div ref={chartRef} className="w-full">
+          <svg ref={svgRef} className="w-full" />
+        </div>
       </div>
     </div>
   );

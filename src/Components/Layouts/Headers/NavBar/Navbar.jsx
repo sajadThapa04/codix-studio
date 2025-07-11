@@ -1,21 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import {
-  HomeIcon,
-  BuildingOfficeIcon,
-  BriefcaseIcon,
-  DocumentTextIcon,
-  EnvelopeIcon,
-  Squares2X2Icon,
-  ChevronDownIcon,
-  Bars3Icon,
-  XMarkIcon,
-  MoonIcon,
-  SunIcon,
-  UserIcon,
-  ArrowRightOnRectangleIcon,
-  CurrencyDollarIcon,
-} from "@heroicons/react/24/outline";
 
 const NavBar = ({
   user = null,
@@ -49,18 +33,18 @@ const NavBar = ({
 
   // Navigation items
   const navItems = [
-    { path: "/", label: "Home", icon: HomeIcon },
-    { path: "/services", label: "Services", icon: Squares2X2Icon },
-    { path: "/portfolio", label: "Portfolio", icon: BriefcaseIcon },
-    { path: "/about", label: "About-Us", icon: BuildingOfficeIcon },
-    { path: "/blog", label: "Blog", icon: DocumentTextIcon },
-    { path: "/contact", label: "Contact", icon: EnvelopeIcon },
+    { path: "/", label: "Home" },
+    { path: "/services", label: "Services" },
+    { path: "/portfolio", label: "Portfolio" },
+    { path: "/about", label: "About-Us" },
+    { path: "/blog", label: "Blog" },
+    { path: "/contact", label: "Contact" },
   ];
 
   const userNavItems = [
-    { path: "/account", label: "My Account", icon: UserIcon },
-    { path: "/projects", label: "My Projects", icon: BriefcaseIcon },
-    { path: "/invoices", label: "Invoices", icon: CurrencyDollarIcon },
+    { path: "/account", label: "My Account" },
+    { path: "/projects", label: "My Projects" },
+    { path: "/invoices", label: "Invoices" },
   ];
 
   return (
@@ -77,9 +61,9 @@ const NavBar = ({
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu">
               {isMobileMenuOpen ? (
-                <XMarkIcon className="h-6 w-6" />
+                <span className="h-6 w-6">×</span>
               ) : (
-                <Bars3Icon className="h-6 w-6" />
+                <span className="h-6 w-6">☰</span>
               )}
             </button>
             <Link
@@ -115,9 +99,9 @@ const NavBar = ({
               className="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
               aria-label={darkMode ? "Light mode" : "Dark mode"}>
               {darkMode ? (
-                <SunIcon className="h-5 w-5 text-yellow-300" />
+                <span className="h-5 w-5">☀️</span>
               ) : (
-                <MoonIcon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                <span className="h-5 w-5">🌙</span>
               )}
             </button>
 
@@ -135,16 +119,7 @@ const NavBar = ({
                 }
                 onMouseEnter={() => setHoveredItem(item.path)}
                 onMouseLeave={() => setHoveredItem(null)}>
-                {isTabletSize ? (
-                  <item.icon className="h-5 w-5" />
-                ) : (
-                  <>
-                    <div className="relative">
-                      <item.icon className="h-5 w-5 mr-2 transition-transform duration-300 group-hover:scale-110" />
-                    </div>
-                    <span className="relative z-10">{item.label}</span>
-                  </>
-                )}
+                <span className="relative z-10">{item.label}</span>
                 <span
                   className={`absolute bottom-0 left-0 h-0.5 bg-blue-500 dark:bg-blue-400 transition-all duration-300 ${
                     hoveredItem === item.path ? "w-full" : "w-0"
@@ -172,15 +147,18 @@ const NavBar = ({
                         {user.fullName.charAt(0).toUpperCase()}
                       </span>
                     ) : (
-                      <UserIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                      <span className="text-blue-600 dark:text-blue-400">
+                        👤
+                      </span>
                     )}
                   </div>
                   {!isTabletSize && (
-                    <ChevronDownIcon
+                    <span
                       className={`h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-300 ${
                         isUserMenuOpen ? "transform rotate-180" : ""
-                      }`}
-                    />
+                      }`}>
+                      ▼
+                    </span>
                   )}
                 </button>
 
@@ -204,7 +182,6 @@ const NavBar = ({
                         to={item.path}
                         className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                         onClick={() => setIsUserMenuOpen(false)}>
-                        <item.icon className="h-4 w-4 mr-3" />
                         {item.label}
                       </Link>
                     ))}
@@ -218,28 +195,14 @@ const NavBar = ({
                       disabled={userLoading}>
                       {userLoading ? (
                         <span className="flex items-center">
-                          <svg
-                            className="animate-spin -ml-1 mr-3 h-4 w-4 text-gray-400"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24">
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
+                          <span className="animate-spin -ml-1 mr-3 h-4 w-4 text-gray-400">
+                            ↻
+                          </span>
                           Signing out...
                         </span>
                       ) : (
                         <>
-                          <ArrowRightOnRectangleIcon className="h-4 w-4 mr-3" />
+                          <span className="mr-3">🚪</span>
                           Sign out
                         </>
                       )}
@@ -281,12 +244,12 @@ const NavBar = ({
             className="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700">
             {darkMode ? (
               <>
-                <SunIcon className="h-5 w-5 mr-3 text-yellow-300" />
+                <span className="mr-3">☀️</span>
                 Light Mode
               </>
             ) : (
               <>
-                <MoonIcon className="h-5 w-5 mr-3 text-gray-600 dark:text-gray-400" />
+                <span className="mr-3">🌙</span>
                 Dark Mode
               </>
             )}
@@ -305,7 +268,6 @@ const NavBar = ({
                 }`
               }
               onClick={() => setIsMobileMenuOpen(false)}>
-              <item.icon className="h-5 w-5 mr-3" />
               {item.label}
             </NavLink>
           ))}
@@ -327,7 +289,9 @@ const NavBar = ({
                         {user.fullName.charAt(0).toUpperCase()}
                       </span>
                     ) : (
-                      <UserIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                      <span className="text-blue-600 dark:text-blue-400">
+                        👤
+                      </span>
                     )}
                   </div>
                 </div>
@@ -349,7 +313,6 @@ const NavBar = ({
                     to={item.path}
                     className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-500 dark:hover:text-blue-400"
                     onClick={() => setIsMobileMenuOpen(false)}>
-                    <item.icon className="h-5 w-5 mr-3" />
                     {item.label}
                   </Link>
                 ))}
@@ -364,28 +327,14 @@ const NavBar = ({
                 disabled={userLoading}>
                 {userLoading ? (
                   <span className="flex items-center">
-                    <svg
-                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-400"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24">
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
+                    <span className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-400">
+                      ↻
+                    </span>
                     Signing out...
                   </span>
                 ) : (
                   <>
-                    <ArrowRightOnRectangleIcon className="h-5 w-5 mr-3" />
+                    <span className="mr-3">🚪</span>
                     Sign out
                   </>
                 )}

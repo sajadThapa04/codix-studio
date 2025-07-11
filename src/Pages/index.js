@@ -8,6 +8,8 @@ import AboutUs from "./AboutMe/AboutUs";
 import ContactForm from "./Contact/ContactForm";
 import NotFoundPage from "./NotFoundPage";
 import AdminDashboard from "./Admin/AdminDashboard";
+import ServicePage from "./Admin/Services/Servicepage";
+import FrontendServiceCard from "../Components/Features/AdminCard/Services/FrontendServiceCard";
 export {
     LoginPage,
     SignUpPage,
@@ -18,5 +20,7 @@ export {
     ContactForm,
     AboutUs,
     NotFoundPage,
-    AdminDashboard
+    AdminDashboard,
+    ServicePage,
+    FrontendServiceCard
 }

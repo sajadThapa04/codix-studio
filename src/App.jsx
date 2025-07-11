@@ -18,6 +18,8 @@ import {
   AboutUs,
   NotFoundPage,
   AdminDashboard,
+  ServicePage,
+  FrontendServiceCard,
 } from "./Pages";
 import AdminLayout from "./Components/Layouts/Admin/AdminLayout";
 import "./App.css";
@@ -35,6 +37,7 @@ import {
   initializeAdminAuth,
   selectIsAdminInitialized,
 } from "./Stores/Slices/admin.slices";
+import FrontendServicePage from "./Pages/Services/FrontendServicePage";
 
 function AuthInitializer({ children }) {
   const dispatch = useDispatch();
@@ -125,6 +128,10 @@ function App() {
           path: "portfolio",
           element: <Portfolio />,
         },
+        {
+          path: "services",
+          element: <FrontendServicePage />,
+        },
       ],
     },
     {
@@ -147,6 +154,10 @@ function App() {
                 {
                   path: "dashboard",
                   element: <AdminDashboard />,
+                },
+                {
+                  path: "services",
+                  element: <ServicePage />,
                 },
               ],
             },

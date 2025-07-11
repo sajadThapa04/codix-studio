@@ -39,12 +39,14 @@ const Footers = ({ darkMode = false }) => {
               className={`text-sm ${
                 darkMode ? "text-gray-300" : "text-gray-600"
               }`}>
-              Creating digital experiences that inspire and transform
-              businesses.
+              Creating digital experiences that inspire and transform businesses
+              worldwide.
             </p>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://facebook.com/codixstudio"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`${
                   darkMode
                     ? "text-gray-400 hover:text-white"
@@ -53,7 +55,9 @@ const Footers = ({ darkMode = false }) => {
                 <FaFacebookF className="h-5 w-5" />
               </a>
               <a
-                href="#"
+                href="https://twitter.com/codixstudio"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`${
                   darkMode
                     ? "text-gray-400 hover:text-white"
@@ -62,7 +66,9 @@ const Footers = ({ darkMode = false }) => {
                 <FaTwitter className="h-5 w-5" />
               </a>
               <a
-                href="#"
+                href="https://instagram.com/codixstudio"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`${
                   darkMode
                     ? "text-gray-400 hover:text-white"
@@ -71,7 +77,9 @@ const Footers = ({ darkMode = false }) => {
                 <FaInstagram className="h-5 w-5" />
               </a>
               <a
-                href="#"
+                href="https://linkedin.com/company/codixstudio"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`${
                   darkMode
                     ? "text-gray-400 hover:text-white"
@@ -161,7 +169,7 @@ const Footers = ({ darkMode = false }) => {
                   className={`ml-3 text-sm ${
                     darkMode ? "text-gray-400" : "text-gray-600"
                   }`}>
-                  info@codixstudio.com
+                  contact@codixstudio.com
                 </span>
               </li>
               <li className="flex items-start">
@@ -170,12 +178,26 @@ const Footers = ({ darkMode = false }) => {
                     darkMode ? "text-gray-400" : "text-gray-500"
                   }`}
                 />
-                <span
-                  className={`ml-3 text-sm ${
-                    darkMode ? "text-gray-400" : "text-gray-600"
-                  }`}>
-                  +1 (555) 123-4567
-                </span>
+                <div className="ml-3">
+                  <a
+                    href="tel:+9779742902061"
+                    className={`text-sm ${
+                      darkMode
+                        ? "text-gray-400 hover:text-white"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}>
+                    Nepal: +977 9742 902061
+                  </a>
+                  <a
+                    href="tel:+61280061234"
+                    className={`text-sm block ${
+                      darkMode
+                        ? "text-gray-400 hover:text-white"
+                        : "text-gray-600 hover:text-gray-900"
+                    } mt-1`}>
+                    Australia: +61 2 8006 1234
+                  </a>
+                </div>
               </li>
               <li className="flex items-start">
                 <MapPinIcon
@@ -183,12 +205,20 @@ const Footers = ({ darkMode = false }) => {
                     darkMode ? "text-gray-400" : "text-gray-500"
                   }`}
                 />
-                <span
-                  className={`ml-3 text-sm ${
-                    darkMode ? "text-gray-400" : "text-gray-600"
-                  }`}>
-                  123 Tech Street, Silicon Valley, CA 94025
-                </span>
+                <div className="ml-3">
+                  <p
+                    className={`text-sm ${
+                      darkMode ? "text-gray-400" : "text-gray-600"
+                    }`}>
+                    Kathmandu: Hattisar, Naxal
+                  </p>
+                  <p
+                    className={`text-sm ${
+                      darkMode ? "text-gray-400" : "text-gray-600"
+                    } mt-1`}>
+                    Sydney: 5/12 Clarence St, NSW, 2000
+                  </p>
+                </div>
               </li>
             </ul>
           </div>

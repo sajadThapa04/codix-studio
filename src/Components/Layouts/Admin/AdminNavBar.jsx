@@ -176,10 +176,10 @@ const AdminNavBar = ({ darkMode, toggleDarkMode }) => {
                 {(!isCollapsed || isHovered) && (
                   <div className="ml-3 text-left overflow-hidden">
                     <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                      {admin.name || "Admin"}
+                      {admin.fullName || "Admin"}
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                      {admin.role === "superadmin" ? "Super Admin" : "Admin"}
+                      {admin.role === "superadmin" ? "Super Admin" : admin.role}
                     </div>
                   </div>
                 )}

@@ -137,6 +137,33 @@ export const updateThumbnail = async (serviceId, imageFile) => {
     return uploadThumbnail(serviceId, imageFile);
 };
 
+
+export const getActiveServices = async (queryParams = {}) => {
+    try {
+        const response = await servicesApi.get("/public", { params: queryParams });
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error;
+    }
+};
+
+export const getActiveServiceById = async (serviceId) => {
+    try {
+        const response = await servicesApi.get(`/public/${serviceId}`);
+
+        // Ensure consistent response structure
+        return {
+            statusCode: response.status,
+            data: response.data.data, // Extract the nested data
+            message: response.data.message,
+            success: response.data.success
+        };
+    } catch (error) {
+        console.error("API Error:", error);
+        throw error.response?.data || error;
+    }
+};
+
 // Helper function to set auth token
 export const setServicesAuthToken = (token) => {
     if (token) {
@@ -178,5 +205,7 @@ export default {
     toggleServiceStatus,
     uploadThumbnail,
     updateThumbnail,
-    setServicesAuthToken
+    setServicesAuthToken,
+    getActiveServices,
+    getActiveServiceById
 };
