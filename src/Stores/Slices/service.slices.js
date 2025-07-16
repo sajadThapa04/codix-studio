@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { setServicesAuthToken, getAllServices } from '../../Api/services.api';
+import { setServicesAuthToken, getAllServices, getServiceById as apiGetServiceById } from '../../Api/services.api';
 
 const initialState = {
     currentService: null,
     services: [],
     uiStatus: 'idle',
+    currentServiceStatus: 'idle', // Specific status for current service
     operationStatus: 'idle',
     operationError: null,
     operationType: null,
@@ -42,7 +43,6 @@ const serviceSlice = createSlice({
             state.filters = action.payload;
         },
         setServices: (state, action) => {
-            // Handle different response formats
             if (Array.isArray(action.payload)) {
                 state.services = action.payload;
             } else if (action.payload?.data) {
@@ -63,6 +63,18 @@ const serviceSlice = createSlice({
             state.uiStatus = 'failed';
             state.operationError = action.payload;
         },
+
+        // Below state is  for the service ID for individual services id 
+        setCurrentServiceLoading: (state) => {
+            state.currentServiceStatus = 'loading';
+        },
+        setCurrentServiceSuccess: (state) => {
+            state.currentServiceStatus = 'succeeded';
+        },
+        setCurrentServiceError: (state, action) => {
+            state.currentServiceStatus = 'failed';
+            state.operationError = action.payload;
+        },
         toggleServiceSelection: (state, action) => {
             const serviceId = action.payload;
             const index = state.selectedServices.indexOf(serviceId);
@@ -79,17 +91,17 @@ const serviceSlice = createSlice({
             setServicesAuthToken(action.payload);
         },
         resetServiceState: () => initialState,
+
     }
 });
 
-// Thunk action for fetching services with proper error handling
+// Thunk action for fetching services
 export const fetchServices = createAsyncThunk(
     'services/fetchAll',
     async (queryParams, { dispatch, rejectWithValue }) => {
         try {
-            dispatch(setServicesLoading());
+            dispatch(setCurrentServiceLoading());
             const response = await getAllServices(queryParams);
-
             return dispatch(setServices(response));
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message || 'Failed to fetch services';
@@ -99,8 +111,27 @@ export const fetchServices = createAsyncThunk(
     }
 );
 
+// Thunk action for fetching a single service by ID
+export const fetchServiceById = createAsyncThunk(
+    'services/fetchById',
+    async (serviceId, { dispatch, rejectWithValue }) => {
+        try {
+            dispatch(setCurrentServiceLoading());
+            const response = await apiGetServiceById(serviceId);
+            dispatch(setCurrentService(response.data));
+            dispatch(setCurrentServiceSuccess());
+            return response.data;
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message || 'Failed to fetch service';
+            dispatch(setCurrentServiceError(errorMessage));
+            return rejectWithValue(errorMessage);
+        }
+    }
+);
+
 // Selectors
 export const selectCurrentService = (state) => state.service.currentService;
+export const selectCurrentServiceStatus = (state) => state.service.currentServiceStatus;
 export const selectServices = (state) => state.service.services;
 export const selectUiStatus = (state) => state.service.uiStatus;
 export const selectOperationStatus = (state) => state.service.operationStatus;
@@ -117,6 +148,9 @@ export const {
     setOperationStatus,
     setOperationError,
     setOperationType,
+    setCurrentServiceLoading,
+    setCurrentServiceSuccess,
+    setCurrentServiceError,
     setFilters,
     setServices,
     setServicesLoading,

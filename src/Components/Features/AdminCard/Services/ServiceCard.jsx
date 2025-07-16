@@ -30,7 +30,7 @@ const ServiceCard = ({
   };
 
   const handleRefresh = () => {
-    onServiceAction("refresh");
+    onServiceAction("refresh", null); // Pass null or empty object as second param
   };
 
   return (

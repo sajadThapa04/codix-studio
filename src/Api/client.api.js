@@ -99,7 +99,6 @@ export const getCurrentClient = async () => {
         throw error.response?.data || error;
     }
 };
-
 export const updateClientDetails = async (clientData) => {
     try {
         const response = await clientApi.patch("/update-details", clientData);

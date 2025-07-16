@@ -78,18 +78,21 @@ const FrontendServiceCard = ({ services = [], darkMode = false }) => {
     const countryData = currencyData[userCountry] || currencyData.US;
     const rate = conversionRates[countryData.code] || countryData.rate;
 
-    const convertedPrice = currency(priceInUSD, { fromCents: true }).multiply(
-      rate
-    );
+    // Case 1: If price is in USD dollars (not cents)
+    const priceInDollars = currency(priceInUSD); // Remove { fromCents: true }
+    const convertedPrice = priceInDollars.multiply(rate);
+
+    // Case 2: If price is in USD cents (uncomment below)
+    // const priceInDollars = currency(priceInUSD, { fromCents: true }).divide(100);
+    // const convertedPrice = priceInDollars.multiply(137.47); // Custom rate for NPR
 
     return `${countryData.symbol}${convertedPrice.format({
       symbol: "",
       decimal: ".",
       separator: ",",
-      precision: convertedPrice.value < 1 ? 2 : 0,
+      precision: 2, // Always show 2 decimal places for currency
     })}`;
   };
-
   const serviceList = Array.isArray(services) ? services : [];
 
   return (

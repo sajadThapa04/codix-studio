@@ -19,7 +19,10 @@ import {
   NotFoundPage,
   AdminDashboard,
   ServicePage,
-  FrontendServiceCard,
+  FrontendServicePage,
+  ClientAccountPage,
+  EditServicePage,
+  ClientPage,
 } from "./Pages";
 import AdminLayout from "./Components/Layouts/Admin/AdminLayout";
 import "./App.css";
@@ -37,7 +40,6 @@ import {
   initializeAdminAuth,
   selectIsAdminInitialized,
 } from "./Stores/Slices/admin.slices";
-import FrontendServicePage from "./Pages/Services/FrontendServicePage";
 
 function AuthInitializer({ children }) {
   const dispatch = useDispatch();
@@ -84,6 +86,17 @@ function App() {
         {
           path: "signup",
           element: <SignUpPage />,
+        },
+        // Move ClientProtectedRoutes outside of blog
+        {
+          element: <ClientProtectedRoutes />,
+          children: [
+            {
+              path: "account",
+              element: <ClientAccountPage />,
+            },
+            // Other protected routes can go here
+          ],
         },
         {
           path: "blog",
@@ -158,6 +171,14 @@ function App() {
                 {
                   path: "services",
                   element: <ServicePage />,
+                },
+                {
+                  path: "clients",
+                  element: <ClientPage />,
+                },
+                {
+                  path: "services/edit/:serviceId",
+                  element: <EditServicePage />,
                 },
               ],
             },

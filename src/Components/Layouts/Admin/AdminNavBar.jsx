@@ -16,6 +16,7 @@ import {
   FaTimes,
   FaChevronLeft,
   FaChevronRight,
+  FaBlog,
 } from "react-icons/fa";
 
 const AdminNavBar = ({ darkMode, toggleDarkMode }) => {
@@ -32,7 +33,16 @@ const AdminNavBar = ({ darkMode, toggleDarkMode }) => {
       label: "Dashboard",
       icon: <FaHome size={20} />,
     },
-    { path: "/admin/clients", label: "Clients", icon: <FaUsers size={20} /> },
+    {
+      path: "/admin/clients",
+      label: "Clients",
+      icon: <FaUsers size={20} />,
+    },
+    {
+      path: "/admin/blogs",
+      label: "Blogs",
+      icon: <FaBlog size={20} />,
+    },
     {
       path: "/admin/services",
       label: "Services",

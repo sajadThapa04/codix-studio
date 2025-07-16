@@ -103,7 +103,7 @@ const Footers = ({ darkMode = false }) => {
                 { path: "/", label: "Home" },
                 { path: "/services", label: "Services" },
                 { path: "/portfolio", label: "Portfolio" },
-                { path: "/team", label: "Team" },
+                { path: "/about", label: "About-us" },
               ].map((item) => (
                 <li key={item.path}>
                   <Link

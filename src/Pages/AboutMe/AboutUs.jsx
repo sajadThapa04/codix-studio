@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import AboutCard from "../../Components/Features/AboutMe/AboutCard";
 import { Modal } from "../../Components/Ui";
@@ -160,9 +160,10 @@ function AboutUs() {
     setSelectedCaseStudy(null);
   };
 
+  const navigate = useNavigate();
+
   const handleGetStarted = () => {
-    // Navigation or other action
-    console.log("Get Started clicked");
+    navigate("/signup");
   };
 
   return (

@@ -9,7 +9,10 @@ import ContactForm from "./Contact/ContactForm";
 import NotFoundPage from "./NotFoundPage";
 import AdminDashboard from "./Admin/AdminDashboard";
 import ServicePage from "./Admin/Services/Servicepage";
-import FrontendServiceCard from "../Components/Features/AdminCard/Services/FrontendServiceCard";
+import FrontendServicePage from "./Services/FrontendServicePage";
+import ClientAccountPage from "./Users/ClientAccountPage";
+import EditServicePage from "./Admin/Services/EditServicePage";
+import ClientPage from "./Admin/Client/ClientPage";
 export {
     LoginPage,
     SignUpPage,
@@ -22,5 +25,8 @@ export {
     NotFoundPage,
     AdminDashboard,
     ServicePage,
-    FrontendServiceCard
+    FrontendServicePage,
+    ClientAccountPage,
+    EditServicePage,
+    ClientPage
 }

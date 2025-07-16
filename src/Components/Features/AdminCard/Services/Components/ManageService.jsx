@@ -18,7 +18,7 @@ const statusBadge = (status) => {
   };
   return (
     <span
-      className={`px-2 py-1 text-xs font-medium rounded-full ${
+      className={`px-2 py-1 text-xs font-semibold rounded-full whitespace-nowrap ${
         classes[status.toLowerCase()] ||
         "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
       }`}>
@@ -37,13 +37,17 @@ const ServiceDetailsRow = ({ label, value }) => {
       </dt>
       <dd className="col-span-2 text-sm text-gray-900 dark:text-gray-300">
         {Array.isArray(value) ? (
-          <ul className="list-disc pl-5">
+          <ul className="list-disc pl-5 space-y-1">
             {value.map((item, index) => (
               <li key={index}>{item}</li>
             ))}
           </ul>
         ) : typeof value === "boolean" ? (
-          value.toString()
+          value ? (
+            "Yes"
+          ) : (
+            "No"
+          )
         ) : (
           value
         )}
@@ -70,13 +74,13 @@ const ManageService = ({
     }));
   };
 
-  // Safely extract services array from the nested structure
+  // Extract services array and pagination safely
   const servicesArray = services?.services || [];
   const pagination = services?.pagination || {};
 
   if (!hasLoadedInitialServices) {
     return (
-      <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden p-6">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
         <div className="flex items-center justify-center p-8">
           <LoadingSpinner size="md" text="Loading services..." />
         </div>
@@ -86,9 +90,9 @@ const ManageService = ({
 
   if (servicesArray.length === 0) {
     return (
-      <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden p-6">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
         <div className="text-center py-8">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
             No services found
           </h3>
           <p className="text-gray-500 dark:text-gray-400 mb-4">
@@ -99,7 +103,7 @@ const ManageService = ({
           <button
             onClick={onRefresh}
             disabled={isLoading}
-            className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 ${
+            className={`inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               isLoading ? "opacity-50 cursor-not-allowed" : ""
             }`}>
             {isLoading ? (
@@ -123,11 +127,12 @@ const ManageService = ({
     <>
       {/* Image Modal */}
       {selectedImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
           <div className="relative max-w-4xl w-full">
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute -top-10 right-0 text-white hover:text-gray-300">
+              className="absolute -top-10 right-0 text-white hover:text-gray-300 focus:outline-none"
+              aria-label="Close image modal">
               <XMarkIcon className="h-8 w-8" />
             </button>
             <img
@@ -141,18 +146,18 @@ const ManageService = ({
 
       <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
         <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
             <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
               Manage Services
             </h1>
             <button
               onClick={onRefresh}
               disabled={isLoading}
-              className={`inline-flex items-center px-3 py-1 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+              className={`inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
                 isLoading ? "opacity-50 cursor-not-allowed" : ""
               }`}>
               <ArrowPathIcon
-                className={`-ml-0.5 mr-2 h-4 w-4 ${
+                className={`-ml-0.5 mr-2 h-5 w-5 ${
                   isLoading ? "animate-spin" : ""
                 }`}
               />
@@ -160,26 +165,26 @@ const ManageService = ({
             </button>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wide whitespace-nowrap">
                     Title
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wide whitespace-nowrap">
                     Category
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wide whitespace-nowrap">
                     Price
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wide whitespace-nowrap">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wide whitespace-nowrap">
                     Actions
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wide whitespace-nowrap">
                     Details
                   </th>
                 </tr>
@@ -187,11 +192,11 @@ const ManageService = ({
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 {servicesArray.map((service) => (
                   <React.Fragment key={service._id}>
-                    <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                    <tr className="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white max-w-xs truncate">
                         {service.title}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">
                         {service.category}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
@@ -200,16 +205,18 @@ const ManageService = ({
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         {statusBadge(service.status)}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                         <button
                           onClick={() => onEdit(service._id)}
                           disabled={isLoading}
-                          className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-500 mr-4 disabled:opacity-50 disabled:cursor-not-allowed">
+                          aria-label={`Edit ${service.title}`}
+                          className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">
                           <PencilIcon className="h-5 w-5 inline" />
                         </button>
                         <button
                           onClick={() => onDelete(service._id)}
                           disabled={isLoading}
+                          aria-label={`Delete ${service.title}`}
                           className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-500 disabled:opacity-50 disabled:cursor-not-allowed">
                           <TrashIcon className="h-5 w-5 inline" />
                         </button>
@@ -217,7 +224,12 @@ const ManageService = ({
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         <button
                           onClick={() => toggleRow(service._id)}
-                          className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                          aria-label={
+                            expandedRows[service._id]
+                              ? `Collapse details for ${service.title}`
+                              : `Expand details for ${service.title}`
+                          }
+                          className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white focus:outline-none">
                           {expandedRows[service._id] ? (
                             <ChevronUpIcon className="h-5 w-5 inline" />
                           ) : (
@@ -229,11 +241,11 @@ const ManageService = ({
                     {expandedRows[service._id] && (
                       <tr>
                         <td
-                          colSpan="6"
+                          colSpan={6}
                           className="px-6 py-4 bg-gray-50 dark:bg-gray-700">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                                 Service Details
                               </h3>
                               <dl className="divide-y divide-gray-200 dark:divide-gray-600">
@@ -264,7 +276,7 @@ const ManageService = ({
                               </dl>
                             </div>
                             <div>
-                              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                                 Features & Tags
                               </h3>
                               <dl className="divide-y divide-gray-200 dark:divide-gray-600">
@@ -278,19 +290,20 @@ const ManageService = ({
                                 />
                               </dl>
                               {service.thumbnail && (
-                                <div className="mt-4">
-                                  <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+                                <div className="mt-5">
+                                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
                                     Thumbnail
                                   </h4>
                                   <button
                                     onClick={() =>
                                       setSelectedImage(service.thumbnail)
                                     }
-                                    className="focus:outline-none">
+                                    aria-label={`View thumbnail for ${service.title}`}
+                                    className="focus:outline-none rounded-md overflow-hidden shadow-sm hover:opacity-90 transition-opacity">
                                     <img
                                       src={service.thumbnail}
                                       alt="Service thumbnail"
-                                      className="h-32 w-32 object-cover rounded-md hover:opacity-90 transition-opacity"
+                                      className="h-32 w-32 object-cover rounded-md"
                                     />
                                   </button>
                                 </div>
