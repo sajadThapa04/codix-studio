@@ -10,13 +10,8 @@ const RATE_LIMIT_CONFIG = {
 let requestCount = 0;
 let lastRequestTime = Date.now();
 
-
-const baseAdminURL = conf?.base_url
-    ? `${conf.base_url}/api/v1/adminDashboard`
-    : `/api/v1/admadminDashboardin`;
-
 export const adminDashboardApi = axios.create({
-    baseURL: baseAdminURL,
+    baseURL: `${conf.base_url}/api/v1/adminDashboard`,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
@@ -25,16 +20,15 @@ export const adminDashboardApi = axios.create({
 
 // Response interceptor to handle token refresh
 adminDashboardApi.interceptors.request.use(async config => {
+    // Rate limiting logic
     const now = Date.now();
     const elapsed = now - lastRequestTime;
 
-    // Reset counter if window has passed
     if (elapsed > RATE_LIMIT_CONFIG.windowMs) {
         requestCount = 0;
         lastRequestTime = now;
     }
 
-    // If we've exceeded the rate limit, delay the request
     if (requestCount >= RATE_LIMIT_CONFIG.maxRequests) {
         const delay = RATE_LIMIT_CONFIG.windowMs - elapsed;
         await new Promise(resolve => setTimeout(resolve, delay));
@@ -42,11 +36,16 @@ adminDashboardApi.interceptors.request.use(async config => {
         lastRequestTime = Date.now();
     }
 
+    // Token attach logic
+    const token = localStorage.getItem("adminToken");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+
     requestCount++;
     return config;
-}, error => {
-    return Promise.reject(error);
-});
+}, error => Promise.reject(error));
+
 
 
 // Client Management
