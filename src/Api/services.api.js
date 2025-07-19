@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import conf from "../conf/conf";
 // Rate limiting configuration
 const RATE_LIMIT_CONFIG = {
     maxRequests: 5, // Max requests per window
@@ -10,7 +10,7 @@ let requestCount = 0;
 let lastRequestTime = Date.now();
 
 export const servicesApi = axios.create({
-    baseURL: "/api/v1/services",
+    baseURL: `${conf.base_url}/api/v1/services`,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json"

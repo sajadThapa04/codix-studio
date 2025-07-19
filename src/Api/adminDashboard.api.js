@@ -1,4 +1,5 @@
 import axios from "axios";
+import conf from "../conf/conf";
 
 // Rate limiting configuration
 const RATE_LIMIT_CONFIG = {
@@ -10,7 +11,7 @@ let requestCount = 0;
 let lastRequestTime = Date.now();
 
 export const adminDashboardApi = axios.create({
-    baseURL: "/api/v1/adminDashboard",
+    baseURL: `${conf.base_url}/api/v1/adminDashboard`,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
