@@ -9,8 +9,13 @@ const RATE_LIMIT_CONFIG = {
 let requestCount = 0;
 let lastRequestTime = Date.now();
 
+
+const baseAdminURL = conf?.base_url
+    ? `${conf.base_url}/api/v1/admin`
+    : `/api/v1/admin`;
+
 export const adminApi = axios.create({
-    baseURL: `${conf.base_url}/api/v1/admin`,
+    baseURL: baseAdminURL,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json"

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Outlet } from "react-router";
 import { useSelector } from "react-redux";
 import AdminNavBar from "./AdminNavBar";
-
+import { Analytics } from "@vercel/analytics/react";
 function AdminLayout() {
   const admin = useSelector((state) => state.admin.currentAdmin);
   const [darkMode, setDarkMode] = useState(() => {
@@ -33,6 +33,7 @@ function AdminLayout() {
       <main className="container mx-auto px-4 py-8">
         <Outlet context={{ darkMode, toggleDarkMode }} />
       </main>
+      <Analytics />
     </div>
   );
 }

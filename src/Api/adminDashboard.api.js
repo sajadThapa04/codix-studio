@@ -10,8 +10,13 @@ const RATE_LIMIT_CONFIG = {
 let requestCount = 0;
 let lastRequestTime = Date.now();
 
+
+const baseAdminURL = conf?.base_url
+    ? `${conf.base_url}/api/v1/adminDashboard`
+    : `/api/v1/admadminDashboardin`;
+
 export const adminDashboardApi = axios.create({
-    baseURL: `${conf.base_url}/api/v1/adminDashboard`,
+    baseURL: baseAdminURL,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",

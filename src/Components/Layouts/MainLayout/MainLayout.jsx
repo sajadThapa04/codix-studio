@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Headers from "../Headers/Headers";
 import Footer from "../Footers/Footers";
-
+import { Analytics } from "@vercel/analytics/react";
 function MainLayout() {
   const [darkMode, setDarkMode] = useState(() => {
     // Check localStorage for saved preference or use system preference
@@ -38,6 +38,7 @@ function MainLayout() {
       <footer className="mt-auto">
         <Footer darkMode={darkMode} />
       </footer>
+      <Analytics />
     </div>
   );
 }

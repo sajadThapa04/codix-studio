@@ -1,13 +1,19 @@
 import axios from "axios";
 import conf from "../conf/conf";
 // Create axios instance with base configuration
+
+const baseAdminURL = conf?.base_url
+    ? `${conf.base_url}/api/v1/clientService`
+    : `/api/v1/clientService`;
+
 const serviceRequestApi = axios.create({
-    baseURL: `${conf.base_url}/api/v1/clientService`,
+    baseURL: baseAdminURL,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json"
     }
 });
+
 
 // Rate limiting configuration
 const RATE_LIMIT_CONFIG = {
