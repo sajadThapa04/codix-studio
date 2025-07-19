@@ -23,6 +23,9 @@ import {
   ClientAccountPage,
   EditServicePage,
   ClientPage,
+  AdminBlogPage,
+  FaqPage,
+  TestimonialsPage,
 } from "./Pages";
 import AdminLayout from "./Components/Layouts/Admin/AdminLayout";
 import "./App.css";
@@ -142,6 +145,14 @@ function App() {
           element: <Portfolio />,
         },
         {
+          path: "faq",
+          element: <FaqPage />,
+        },
+        {
+          path: "testimonials",
+          element: <TestimonialsPage />,
+        },
+        {
           path: "services",
           element: <FrontendServicePage />,
         },
@@ -175,6 +186,10 @@ function App() {
                 {
                   path: "clients",
                   element: <ClientPage />,
+                },
+                {
+                  path: "adminBlogs",
+                  element: <AdminBlogPage />,
                 },
                 {
                   path: "services/edit/:serviceId",

@@ -13,6 +13,9 @@ import FrontendServicePage from "./Services/FrontendServicePage";
 import ClientAccountPage from "./Users/ClientAccountPage";
 import EditServicePage from "./Admin/Services/EditServicePage";
 import ClientPage from "./Admin/Client/ClientPage";
+import AdminBlogPage from "./Admin/Blog/AdminBlogPage";
+import FaqPage from "./FAQ/FaqPage";
+import TestimonialsPage from "./Testimonials/TestimonialsPage";
 export {
     LoginPage,
     SignUpPage,
@@ -28,5 +31,8 @@ export {
     FrontendServicePage,
     ClientAccountPage,
     EditServicePage,
-    ClientPage
+    ClientPage,
+    AdminBlogPage,
+    FaqPage,
+    TestimonialsPage
 }

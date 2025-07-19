@@ -48,7 +48,14 @@ export const createContact = async (contactData) => {
         const response = await contactApi.post("/", contactData);
         return response.data;
     } catch (error) {
-        throw error.response?.data || error;
+        // Structure the error response consistently
+        const apiError = {
+            message: error.response?.data?.message ||
+                'You\'ve reached the maximum number of contact requests (3) allowed within 24 hours. Please try again later.',
+            status: error.response?.status || 429,
+            data: error.response?.data || null
+        };
+        throw apiError;
     }
 };
 
@@ -57,7 +64,13 @@ export const createAuthenticatedContact = async (contactData) => {
         const response = await contactApi.post("/auth", contactData);
         return response.data;
     } catch (error) {
-        throw error.response?.data || error;
+        const apiError = {
+            message: error.response?.data?.message ||
+                'You\'ve reached the maximum number of contact requests (3) allowed within 24 hours. Please try again later.',
+            status: error.response?.status || 429,
+            data: error.response?.data || null
+        };
+        throw apiError;
     }
 };
 

@@ -42,17 +42,21 @@ export const useCreateContact = () => {
         },
         onError: (error) => {
             console.error('Error creating contact:', error);
-            if (error.response?.status === 409) {
-                throw new Error('A contact with similar details already exists');
-            }
-            throw error;
+            // Return the structured error
+            throw {
+                message: error.message,
+                status: error.status,
+                response: {
+                    data: {
+                        message: error.message
+                    },
+                    status: error.status
+                }
+            };
         }
     });
 };
 
-/**
- * Hook for creating a new contact (authenticated)
- */
 export const useCreateAuthenticatedContact = () => {
     const queryClient = useQueryClient();
 
@@ -64,11 +68,20 @@ export const useCreateAuthenticatedContact = () => {
         },
         onError: (error) => {
             console.error('Error creating authenticated contact:', error);
-            throw error;
+            // Return the structured error
+            throw {
+                message: error.message,
+                status: error.status,
+                response: {
+                    data: {
+                        message: error.message
+                    },
+                    status: error.status
+                }
+            };
         }
     });
 };
-
 /**
  * Hook for fetching all contacts (admin only)
  */

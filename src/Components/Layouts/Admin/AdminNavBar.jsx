@@ -39,7 +39,7 @@ const AdminNavBar = ({ darkMode, toggleDarkMode }) => {
       icon: <FaUsers size={20} />,
     },
     {
-      path: "/admin/blogs",
+      path: "/admin/adminBlogs",
       label: "Blogs",
       icon: <FaBlog size={20} />,
     },

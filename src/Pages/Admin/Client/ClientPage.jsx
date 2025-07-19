@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import {
   useAdminClients,
   useUpdateClient,
+  useDeleteClient,
 } from "../../../Hooks/admin/adminDashboard/adminDashboardHook";
 import { MagnifyingGlassIcon, FunnelIcon } from "@heroicons/react/24/outline";
 import ClientsCard from "../../../Components/Features/AdminCard/Clients/ClientsCard";
@@ -11,11 +12,13 @@ import { Modal } from "../../../Components/Ui";
 function ClientPage() {
   const { data: clientsData, isLoading, isError, error } = useAdminClients();
   const { mutate: updateClient } = useUpdateClient();
+  const { mutate: deleteClient } = useDeleteClient();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [editingClient, setEditingClient] = useState(null);
+  const [clientToDelete, setClientToDelete] = useState(null);
   const itemsPerPage = 9;
 
   const clients = useMemo(
@@ -51,6 +54,7 @@ function ClientPage() {
     console.log("Client data being edited:", client);
     setEditingClient(client);
   };
+
   const handleUpdateClient = async (clientId, updateData) => {
     try {
       console.log("Handling update for client:", clientId);
@@ -66,15 +70,18 @@ function ClientPage() {
   };
 
   const handleDeleteClient = (client) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete ${
-          client.fullName || client.name || "this client"
-        }?`
-      )
-    ) {
-      console.log("Deleting client:", client);
+    setClientToDelete(client);
+  };
+
+  const confirmDelete = () => {
+    if (clientToDelete) {
+      deleteClient(clientToDelete.id || clientToDelete._id);
+      setClientToDelete(null);
     }
+  };
+
+  const cancelDelete = () => {
+    setClientToDelete(null);
   };
 
   if (isLoading) {
@@ -251,6 +258,37 @@ function ClientPage() {
             onUpdate={handleUpdateClient}
           />
         )}
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={!!clientToDelete}
+        onClose={cancelDelete}
+        title="Confirm Deletion"
+        className="max-w-md">
+        <div className="space-y-4">
+          <p className="text-gray-600 dark:text-gray-800">
+            Are you sure you want to delete{" "}
+            <span className="font-semibold">
+              {clientToDelete?.fullName ||
+                clientToDelete?.name ||
+                "this client"}
+            </span>
+            ? This action cannot be undone.
+          </p>
+          <div className="flex justify-end space-x-3">
+            <button
+              onClick={cancelDelete}
+              className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-800 hover:bg-gray-50 dark:hover:bg-gray-300 rounded-md border border-gray-300 dark:border-gray-600">
+              Cancel
+            </button>
+            <button
+              onClick={confirmDelete}
+              className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md shadow-sm">
+              Delete
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

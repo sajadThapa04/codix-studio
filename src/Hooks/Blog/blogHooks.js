@@ -111,6 +111,7 @@ export const useGetAllBlogs = (filters = {}) => {
         queryKey: blogKeys.list(filters),
         queryFn: () => withAuth(getAllBlogs)(filters),
         staleTime: 1000 * 60 * 5, // 5 minutes
+        cacheTime: 10 * 60 * 1000, // 10 minutes
         keepPreviousData: true,
     });
 };

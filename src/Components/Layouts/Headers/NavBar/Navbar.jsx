@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { FiLogOut } from "react-icons/fi";
 
 const NavBar = ({
   user = null,
@@ -202,7 +203,9 @@ const NavBar = ({
                         </span>
                       ) : (
                         <>
-                          <span className="mr-3">🚪</span>
+                          <span className="mr-3">
+                            <FiLogOut />
+                          </span>
                           Sign out
                         </>
                       )}
