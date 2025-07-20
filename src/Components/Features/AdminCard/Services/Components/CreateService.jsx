@@ -346,8 +346,8 @@ const CreateService = ({ onSubmit, onCancel, isLoading }) => {
                   <option value="" disabled>
                     Select status
                   </option>
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
                 </select>
                 {errors.status && (
                   <p className="mt-1 text-sm text-red-600 dark:text-red-400">
