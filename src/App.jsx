@@ -26,6 +26,7 @@ import {
   AdminBlogPage,
   FaqPage,
   TestimonialsPage,
+  CareerPage,
 } from "./Pages";
 import AdminLayout from "./Components/Layouts/Admin/AdminLayout";
 import "./App.css";
@@ -155,6 +156,10 @@ function App() {
         {
           path: "services",
           element: <FrontendServicePage />,
+        },
+        {
+          path: "careers",
+          element: <CareerPage />,
         },
       ],
     },

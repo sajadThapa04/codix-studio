@@ -15,6 +15,7 @@ import EditServicePage from "./Admin/Services/EditServicePage";
 import ClientPage from "./Admin/Client/ClientPage";
 import AdminBlogPage from "./Admin/Blog/AdminBlogPage";
 import FaqPage from "./FAQ/FaqPage";
+import CareerPage from "./Career/CareerPage";
 import TestimonialsPage from "./Testimonials/TestimonialsPage";
 export {
     LoginPage,
@@ -34,5 +35,6 @@ export {
     ClientPage,
     AdminBlogPage,
     FaqPage,
-    TestimonialsPage
+    TestimonialsPage,
+    CareerPage
 }

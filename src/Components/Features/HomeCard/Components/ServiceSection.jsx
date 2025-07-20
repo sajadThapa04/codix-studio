@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import {
   CodeBracketIcon,
   DevicePhoneMobileIcon,
@@ -13,64 +13,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { useMediaQuery } from "react-responsive";
 
-// Image imports for each service category
-const serviceImages = {
-  Web_development: [
-    "Web_development/ScreenShowingResponsiveSites.jpg",
-    "Web_development/UiScreenMockup.jpg",
-    "Web_development/developers-team-collaborating.jpg",
-    "Web_development/person-coding-on-laptop.jpg",
-  ],
-  Mobile_Apps: [
-    "Mobile_Apps/dennis-irorere-yvB-g4g8Uj8-unsplash.jpg",
-    "Mobile_Apps/mariia-shalabaieva-GhqUDwV5Y5Q-unsplash.jpg",
-    "Mobile_Apps/greg-rosenke-SF38xAcEp-E-unsplash.jpg",
-    "Mobile_Apps/masakaze-kawakami-aD6mY43V_QQ-unsplash.jpg",
-  ],
-  Ui_Ux_Design: [
-    "Ui_Ux_Design/brian-wangenheim-TlW1b5673_M-unsplash.jpg",
-    "Ui_Ux_Design/kevin-shek-pWtydIYnASM-unsplash.jpg",
-    "Ui_Ux_Design/ji-weon-p5VsbM42DCo-unsplash.jpg",
-    "Ui_Ux_Design/van-tay-media-qUgum4PqOUk-unsplash.jpg",
-  ],
-  Cloud_Solution: [
-    "Cloud_Solution/tyler-eqd0f78u9nI-unsplash.jpg",
-    "Cloud_Solution/sigmund-Rez3-Mv7n_c-unsplash.jpg",
-    "Cloud_Solution/farhat-altaf-C16YHBerCg4-unsplash.jpg",
-    "Cloud_Solution/ChatGPT Image Jun 24, 2025, 12_15_10 AM.png",
-  ],
-  Data_analytics: [
-    "Data_analytics/luke-chesser-JKUTrJ4vK00-unsplash.jpg",
-    "Data_analytics/boitumelo-CJJdMHz4s5c-unsplash.jpg",
-    "Data_analytics/mario-verduzco-xSdFf1Lcx6o-unsplash.jpg",
-    "Data_analytics/rc-xyz-nft-gallery-UqILKDhWiFw-unsplash.jpg",
-  ],
-  Ai_Integration: [
-    "Ai_Integration/guerrillabuzz-RIvSJTiGwLc-unsplash.jpg",
-    "Ai_Integration/airfocus-K_VeavYEfdA-unsplash.jpg",
-    "Ai_Integration/katja-anokhina-_7ceGXTAtyQ-unsplash.jpg",
-    "Ai_Integration/shubham-dhage-2sz-3NrmZYU-unsplash.jpg",
-  ],
-  Social_media: [
-    "Social_media/collabstr-k8plFiceP0I-unsplash.jpg",
-    "Social_media/insung-yoon-QoaLVVhjlKY-unsplash.jpg",
-    "Social_media/mayank-girdhar-2x9XhQmegeU-unsplash.jpg",
-    "Social_media/tony-litvyak-1H1y3XFtcs8-unsplash.jpg",
-  ],
-  Expert_seminars: [
-    "Expert_seminars/kilian-seiler-PZLgTUAhxMM-unsplash.jpg",
-    "Expert_seminars/bbc-creative-6YLTd7y1aLo-unsplash.jpg",
-    "Expert_seminars/timur-shakerzianov-iUxKrlc5KjA-unsplash.jpg",
-    "Expert_seminars/walls-io-PYWRahn0YcQ-unsplash.jpg",
-  ],
-  Web_Dev_Classes: [
-    "Web_Dev_Classes/wonderlane-b9-odQi5oDo-unsplash.jpg",
-    "Web_Dev_Classes/gaurav-tiwari-lKxSeXSrKlM-unsplash.jpg",
-    "Web_Dev_Classes/patrick-amoy-6DfEbkqsTiA-unsplash.jpg",
-    "Web_Dev_Classes/thomas-park-SS-r7BvCqTY-unsplash.jpg",
-  ],
-};
-
 const services = [
   {
     icon: CodeBracketIcon,
@@ -78,7 +20,7 @@ const services = [
     description:
       "Custom-built websites with modern frameworks like React and Next.js, optimized for performance, SEO, and user experience.",
     color: "text-blue-500",
-    category: "Web_development",
+    image: "/images/Web_development/developers-team-collaborating.jpg",
   },
   {
     icon: DevicePhoneMobileIcon,
@@ -86,7 +28,7 @@ const services = [
     description:
       "Cross-platform mobile applications using React Native or Flutter, delivering native-like performance.",
     color: "text-green-500",
-    category: "Mobile_Apps",
+    image: "/images/Mobile_Apps/dennis-irorere-yvB-g4g8Uj8-unsplash.jpg",
   },
   {
     icon: PaintBrushIcon,
@@ -94,7 +36,7 @@ const services = [
     description:
       "Intuitive interfaces with user-centered design principles to maximize engagement and conversions.",
     color: "text-purple-500",
-    category: "Ui_Ux_Design",
+    image: "/images/Ui_Ux_Design/kevin-shek-pWtydIYnASM-unsplash.jpg",
   },
   {
     icon: ServerStackIcon,
@@ -102,7 +44,7 @@ const services = [
     description:
       "Scalable cloud infrastructure on AWS, Azure, or Google Cloud with CI/CD pipelines and automation.",
     color: "text-cyan-500",
-    category: "Cloud_Solution",
+    image: "/images/Cloud_Solution/tyler-eqd0f78u9nI-unsplash.jpg",
   },
   {
     icon: ChartBarIcon,
@@ -110,7 +52,7 @@ const services = [
     description:
       "Powerful data visualization and business intelligence tools to uncover actionable insights.",
     color: "text-yellow-500",
-    category: "Data_analytics",
+    image: "/images/Data_analytics/luke-chesser-JKUTrJ4vK00-unsplash.jpg",
   },
   {
     icon: CpuChipIcon,
@@ -118,7 +60,7 @@ const services = [
     description:
       "Custom AI solutions including chatbots, recommendation systems, and predictive analytics.",
     color: "text-pink-500",
-    category: "Ai_Integration",
+    image: "/images/Ai_Integration/guerrillabuzz-RIvSJTiGwLc-unsplash.jpg",
   },
   {
     icon: MegaphoneIcon,
@@ -126,7 +68,7 @@ const services = [
     description:
       "Targeted ad campaigns and content strategies to grow your audience and engagement.",
     color: "text-red-500",
-    category: "Social_media",
+    image: "/images/Social_media/mayank-girdhar-2x9XhQmegeU-unsplash.jpg",
   },
   {
     icon: UserGroupIcon,
@@ -134,7 +76,7 @@ const services = [
     description:
       "Monthly workshops with industry leaders covering emerging technologies and best practices.",
     color: "text-indigo-500",
-    category: "Expert_seminars",
+    image: "/images/Expert_seminars/bbc-creative-6YLTd7y1aLo-unsplash.jpg",
   },
   {
     icon: AcademicCapIcon,
@@ -142,45 +84,14 @@ const services = [
     description:
       "Hands-on coding bootcamps with personalized mentorship and real-world projects.",
     color: "text-teal-500",
-    category: "Web_Dev_Classes",
+    image: "/images/Web_Dev_Classes/patrick-amoy-6DfEbkqsTiA-unsplash.jpg",
   },
 ];
 
 const ServicesSection = ({ darkMode }) => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
-  const [currentImageIndices, setCurrentImageIndices] = useState({});
   const [hoveredCard, setHoveredCard] = useState(null);
-  const [isHovering, setIsHovering] = useState(false);
-
-  // Initialize image indices
-  useEffect(() => {
-    const initialIndices = {};
-    services.forEach((service, index) => {
-      initialIndices[index] = 0;
-    });
-    setCurrentImageIndices(initialIndices);
-  }, []);
-
-  // Image rotation effect
-  useEffect(() => {
-    // Don't rotate images if any card is being hovered
-    if (isHovering) return;
-
-    const interval = setInterval(() => {
-      setCurrentImageIndices((prevIndices) => {
-        const newIndices = { ...prevIndices };
-        Object.keys(prevIndices).forEach((key) => {
-          const serviceIndex = parseInt(key);
-          const images = serviceImages[services[serviceIndex].category];
-          newIndices[key] = (prevIndices[key] + 1) % images.length;
-        });
-        return newIndices;
-      });
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [isHovering]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -249,12 +160,6 @@ const ServicesSection = ({ darkMode }) => {
     },
   };
 
-  const imageVariants = {
-    enter: { opacity: 0 },
-    center: { opacity: 1 },
-    exit: { opacity: 0 },
-  };
-
   // Calculate how many cards to show based on screen size
   const getVisibleCards = () => {
     if (isMobile) return 1;
@@ -303,23 +208,14 @@ const ServicesSection = ({ darkMode }) => {
             variants={containerVariants}>
             {services.map((service, index) => {
               const Icon = service.icon;
-              const images = serviceImages[service.category];
-              const currentImageIndex = currentImageIndices[index] || 0;
-              const currentImage = images[currentImageIndex];
 
               return (
                 <motion.div
                   key={index}
                   className="flex-shrink-0"
                   variants={itemVariants}
-                  onHoverStart={() => {
-                    setHoveredCard(index);
-                    setIsHovering(true);
-                  }}
-                  onHoverEnd={() => {
-                    setHoveredCard(null);
-                    setIsHovering(false);
-                  }}>
+                  onHoverStart={() => setHoveredCard(index)}
+                  onHoverEnd={() => setHoveredCard(null)}>
                   <motion.div
                     className={`p-6 rounded-xl flex flex-col h-full ${
                       darkMode ? "bg-gray-800" : "bg-white"
@@ -331,20 +227,12 @@ const ServicesSection = ({ darkMode }) => {
                     <motion.div
                       className="relative overflow-hidden rounded-lg aspect-video mb-4"
                       variants={imageContainerVariants}>
-                      <AnimatePresence mode="wait">
-                        <motion.img
-                          key={`${index}-${currentImageIndex}`}
-                          src={`/images/${currentImage}`}
-                          alt={service.title}
-                          className="w-full h-full object-cover absolute inset-0"
-                          initial="enter"
-                          animate="center"
-                          exit="exit"
-                          variants={imageVariants}
-                          transition={{ duration: 0.2, ease: "easeInOut" }}
-                          loading="lazy"
-                        />
-                      </AnimatePresence>
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-full object-cover absolute inset-0"
+                        loading="lazy"
+                      />
                       <div
                         className={`absolute inset-0 bg-gradient-to-t ${
                           darkMode ? "from-gray-900" : "from-white"

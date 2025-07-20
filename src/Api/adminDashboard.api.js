@@ -11,7 +11,7 @@ let requestCount = 0;
 let lastRequestTime = Date.now();
 
 export const adminDashboardApi = axios.create({
-    baseURL: `${conf.base_url}/api/v1/adminDashboard`,
+    baseURL: conf.node_env === "production" ? `${conf.base_url}/api/v1/adminDashboard` : "/api/v1/adminDashboard",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",

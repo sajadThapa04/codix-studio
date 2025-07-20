@@ -10,12 +10,8 @@ let requestCount = 0;
 let lastRequestTime = Date.now();
 
 
-const baseAdminURL = conf?.base_url
-    ? `${conf.base_url}/api/v1/admin`
-    : `/api/v1/admin`;
-
 export const adminApi = axios.create({
-    baseURL: baseAdminURL,
+    baseURL: conf.node_env === "production" ? `${conf.base_url}/api/v1/admin` : "/api/v1/admin",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json"

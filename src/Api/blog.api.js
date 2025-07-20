@@ -10,7 +10,7 @@ let requestCount = 0;
 let lastRequestTime = Date.now();
 
 export const blogApi = axios.create({
-    baseURL: `${conf.base_url}/api/v1/blog`,
+    baseURL: conf.node_env === "production" ? `${conf.base_url}/api/v1/blog` : "/api/v1/blog",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json"

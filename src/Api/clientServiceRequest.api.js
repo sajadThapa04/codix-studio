@@ -2,7 +2,7 @@ import axios from "axios";
 import conf from "../conf/conf";
 // Create axios instance with base configuration
 const serviceRequestApi = axios.create({
-    baseURL: `${conf.base_url}/api/v1/clientService`,
+    baseURL: conf.node_env === "production" ? `${conf.base_url}/api/v1/clientService` : "/api/v1/clientService",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json"
