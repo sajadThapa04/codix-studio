@@ -11,9 +11,7 @@ let requestCount = 0;
 let lastRequestTime = Date.now();
 
 export const careerApi = axios.create({
-    baseURL: conf.node_env === "production"
-        ? `${conf.base_url}/career`  // Changed from /api/v1/careers to /career
-        : "/api/v1/career",                 // Changed from /api/v1/careers to /career
+    baseURL: conf.node_env === "production" ? `${conf.base_url}/career` : "/api/v1/career", // Changed from /api/v1/careers to /career
     withCredentials: true,
     headers: {
         "Content-Type": "application/json"

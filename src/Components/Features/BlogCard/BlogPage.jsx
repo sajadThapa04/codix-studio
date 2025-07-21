@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ErrorMessage, Modal } from "../../Ui";
 import {
@@ -14,7 +14,6 @@ import { useOutletContext } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../../Stores/Slices/client.slices";
 import BlogCard from "./BlogCard";
-import Pagination from "./Pagination";
 import { debounce } from "lodash";
 
 // Skeleton Loading Component
@@ -69,9 +68,11 @@ const BlogPage = () => {
   const { darkMode } = useOutletContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [inputValue, setInputValue] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [shuffledBlogs, setShuffledBlogs] = useState([]);
+  const [allBlogs, setAllBlogs] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
   const blogsPerPage = 6;
   const navigate = useNavigate();
   const currentUser = useSelector(selectCurrentUser);
@@ -81,7 +82,9 @@ const BlogPage = () => {
     () =>
       debounce((query) => {
         setSearchTerm(query);
-        setCurrentPage(1);
+        setPage(1);
+        setAllBlogs([]);
+        setHasMore(true);
       }, 500),
     []
   );
@@ -97,6 +100,42 @@ const BlogPage = () => {
   const clearSearch = () => {
     setInputValue("");
     setSearchTerm("");
+    setPage(1);
+    setAllBlogs([]);
+    setHasMore(true);
+  };
+
+  // Calculate blog interest score
+  const calculateInterestScore = (blog) => {
+    // Base score on various factors (adjust weights as needed)
+    let score = 0;
+
+    // More recent blogs get higher score
+    const daysOld =
+      (new Date() - new Date(blog.createdAt)) / (1000 * 60 * 60 * 24);
+    score += Math.max(0, 30 - daysOld) * 2; // More weight to recent posts
+
+    // Blogs with more likes get higher score
+    score += (blog.likes?.length || 0) * 3;
+
+    // Blogs with more comments get higher score
+    score += (blog.comments?.length || 0) * 2;
+
+    // Longer blogs (based on reading time) get slightly higher score
+    if (blog.readingTime) {
+      score += Math.min(blog.readingTime, 10); // Cap at 10 minutes
+    }
+
+    return score;
+  };
+
+  // Sort blogs by interest score
+  const sortBlogsByInterest = (blogs) => {
+    return [...blogs].sort((a, b) => {
+      const scoreA = calculateInterestScore(a);
+      const scoreB = calculateInterestScore(b);
+      return scoreB - scoreA; // Descending order
+    });
   };
 
   // Optimized data fetching
@@ -107,41 +146,63 @@ const BlogPage = () => {
     error,
     refetch,
   } = useGetAllBlogs({
-    page: currentPage,
+    page,
     limit: blogsPerPage,
     search: searchTerm,
   });
 
-  // Fisher-Yates shuffle algorithm
-  const shuffleArray = (array) => {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-    }
-    return newArray;
-  };
-
-  // Memoize and shuffle the blogs data
-  const { blogs, totalPages } = useMemo(() => {
-    const data = {
-      blogs: Array.isArray(responseData?.data?.blogs)
-        ? responseData.data.blogs
-        : [],
-      totalPages: responseData?.data?.pages || 1,
-    };
-    return data;
-  }, [responseData]);
-
-  // Shuffle blogs when they change (but not when searching)
+  // Process new blogs and add to existing ones
   useEffect(() => {
-    if (blogs.length > 0 && searchTerm === "") {
-      setShuffledBlogs(shuffleArray([...blogs]));
-    } else if (blogs.length > 0) {
-      // Don't shuffle when searching
-      setShuffledBlogs([...blogs]);
+    if (responseData?.data?.blogs) {
+      const newBlogs = responseData.data.blogs;
+
+      // Sort new blogs by interest before adding to the list
+      const sortedNewBlogs = sortBlogsByInterest(newBlogs);
+
+      setAllBlogs((prev) => {
+        // Combine and deduplicate blogs
+        const combined = [...prev, ...sortedNewBlogs];
+        const uniqueBlogs = combined.reduce((acc, blog) => {
+          if (!acc.some((b) => b._id === blog._id)) {
+            acc.push(blog);
+          }
+          return acc;
+        }, []);
+
+        return uniqueBlogs;
+      });
+
+      setHasMore(responseData.data.pages > page);
+      setIsFetching(false);
     }
-  }, [blogs, searchTerm]);
+  }, [responseData, page]);
+
+  // Infinite scroll handler
+  const handleScroll = useCallback(() => {
+    if (isFetching || !hasMore) return;
+
+    const scrollPosition =
+      window.innerHeight + document.documentElement.scrollTop;
+    const scrollThreshold = document.documentElement.offsetHeight - 500;
+
+    if (scrollPosition >= scrollThreshold) {
+      setIsFetching(true);
+      setPage((prev) => prev + 1);
+    }
+  }, [isFetching, hasMore]);
+
+  // Set up scroll event listener
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // Reset when search term changes
+  useEffect(() => {
+    setAllBlogs([]);
+    setPage(1);
+    setHasMore(true);
+  }, [searchTerm]);
 
   const handleCreatePostClick = (e) => {
     if (!currentUser) {
@@ -229,6 +290,12 @@ const BlogPage = () => {
     </div>
   );
 
+  const loadingMoreState = (
+    <div className="flex justify-center my-8">
+      <FaSpinner className="animate-spin text-2xl text-blue-500" />
+    </div>
+  );
+
   const emptyState = (
     <div
       className={`text-center py-12 ${
@@ -269,20 +336,18 @@ const BlogPage = () => {
   const blogGrid = (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {shuffledBlogs.map((blog) => (
+        {allBlogs.map((blog) => (
           <BlogCard key={blog._id} blog={blog} darkMode={darkMode} />
         ))}
       </div>
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={(page) => {
-            setCurrentPage(page);
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          darkMode={darkMode}
-        />
+      {isFetching && hasMore && loadingMoreState}
+      {!hasMore && allBlogs.length > 0 && (
+        <div
+          className={`text-center py-6 ${
+            darkMode ? "text-gray-400" : "text-gray-500"
+          }`}>
+          You've reached the end of the list
+        </div>
       )}
     </>
   );
@@ -300,9 +365,9 @@ const BlogPage = () => {
             />
           )}
 
-          {isLoading
+          {isLoading && allBlogs.length === 0
             ? loadingState
-            : shuffledBlogs.length === 0
+            : allBlogs.length === 0
             ? emptyState
             : blogGrid}
         </div>
