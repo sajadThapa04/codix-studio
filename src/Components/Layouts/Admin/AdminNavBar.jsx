@@ -3,8 +3,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { adminLogout } from "../../../Stores/Slices/admin.slices";
 import {
-  FaHome,
+  FaPhone,
   FaUsers,
+  FaBriefcase,
   FaListUl,
   FaChartBar,
   FaCog,
@@ -18,6 +19,7 @@ import {
   FaChevronRight,
   FaBlog,
 } from "react-icons/fa";
+import { path } from "d3";
 
 const AdminNavBar = ({ darkMode, toggleDarkMode }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -29,9 +31,9 @@ const AdminNavBar = ({ darkMode, toggleDarkMode }) => {
 
   const adminNavItems = [
     {
-      path: "/admin/dashboard",
-      label: "Dashboard",
-      icon: <FaHome size={20} />,
+      path: "/admin/contacts",
+      label: "Contacts",
+      icon: <FaPhone size={20} />,
     },
     {
       path: "/admin/clients",
@@ -47,6 +49,11 @@ const AdminNavBar = ({ darkMode, toggleDarkMode }) => {
       path: "/admin/services",
       label: "Services",
       icon: <FaListUl size={20} />,
+    },
+    {
+      path: "/admin/careers",
+      label: "Careers",
+      icon: <FaBriefcase size={20} />,
     },
     {
       path: "/admin/reports",

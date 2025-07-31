@@ -7,7 +7,8 @@ import UpdateBlog from "./Blog/UpdateBlog";
 import AboutUs from "./AboutMe/AboutUs";
 import ContactForm from "./Contact/ContactForm";
 import NotFoundPage from "./NotFoundPage";
-import AdminDashboard from "./Admin/AdminDashboard";
+import AdminContactPage from "./Admin/AdminContactPage";
+import AdminCareersPage from "./Admin/Careers/AdminCareersPage";
 import ServicePage from "./Admin/Services/Servicepage";
 import FrontendServicePage from "./Services/FrontendServicePage";
 import ClientAccountPage from "./Users/ClientAccountPage";
@@ -27,7 +28,8 @@ export {
     ContactForm,
     AboutUs,
     NotFoundPage,
-    AdminDashboard,
+    AdminContactPage,
+    AdminCareersPage,
     ServicePage,
     FrontendServicePage,
     ClientAccountPage,

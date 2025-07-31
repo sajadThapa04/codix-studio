@@ -1,4 +1,4 @@
-// src/Components/Features/AdminCard/Contacts/ContactsCard.jsx
+// src/Components/Features/AdminCard/Contacts/AdminContactsCard.jsx
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
@@ -8,7 +8,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 
-const ContactsCard = ({
+const AdminContactsCard = ({
   contacts = [],
   total = 0,
   pages = 1,
@@ -225,7 +225,7 @@ const ContactsCard = ({
   );
 };
 
-ContactsCard.propTypes = {
+AdminContactsCard.propTypes = {
   contacts: PropTypes.array.isRequired,
   total: PropTypes.number.isRequired,
   pages: PropTypes.number.isRequired,
@@ -235,4 +235,4 @@ ContactsCard.propTypes = {
   onDelete: PropTypes.func.isRequired,
 };
 
-export default ContactsCard;
+export default AdminContactsCard;

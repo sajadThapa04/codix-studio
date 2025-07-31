@@ -1,7 +1,7 @@
-// src/Pages/Admin/AdminDashboard.jsx
+// src/Pages/Admin/AdminContactPage.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { debounce } from "lodash";
-import ContactsCard from "../../Components/Features/AdminCard/Contacts/ContactsCard";
+import AdminContactsCard from "../../Components/Features/AdminCard/Contacts/AdminContactsCard";
 import {
   useGetAllContacts,
   useUpdateContact,
@@ -11,7 +11,7 @@ import { useOutletContext } from "react-router-dom";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Modal } from "../../Components/Ui";
 
-function AdminDashboard() {
+function AdminContactPage() {
   const { darkMode, toggleDarkMode } = useOutletContext();
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -102,7 +102,7 @@ function AdminDashboard() {
     setContactToDelete(null);
   };
 
-  // In your AdminDashboard.jsx, update the handleSaveChanges function:
+  // In your AdminContactPage.jsx, update the handleSaveChanges function:
   const handleSaveChanges = () => {
     if (!editingContact) return;
 
@@ -256,7 +256,7 @@ function AdminDashboard() {
 
         {/* Contacts Table */}
         {contactsData?.contacts?.length > 0 ? (
-          <ContactsCard
+          <AdminContactsCard
             contacts={contactsData.contacts}
             total={contactsData.total}
             pages={contactsData.pages}
@@ -364,4 +364,4 @@ function AdminDashboard() {
   );
 }
 
-export default AdminDashboard;
+export default AdminContactPage;

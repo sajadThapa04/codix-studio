@@ -11,13 +11,14 @@ import {
   LoginPage,
   SignUpPage,
   AdminLogin,
+  AdminCareersPage,
   CreateBlog,
   DisplayBlogById,
   UpdateBlog,
   ContactForm,
   AboutUs,
   NotFoundPage,
-  AdminDashboard,
+  AdminContactPage,
   ServicePage,
   FrontendServicePage,
   ClientAccountPage,
@@ -181,8 +182,8 @@ function App() {
                   element: <Navigate to="/admin" replace />,
                 },
                 {
-                  path: "dashboard",
-                  element: <AdminDashboard />,
+                  path: "Contacts",
+                  element: <AdminContactPage />,
                 },
                 {
                   path: "services",
@@ -191,6 +192,10 @@ function App() {
                 {
                   path: "clients",
                   element: <ClientPage />,
+                },
+                {
+                  path: "careers",
+                  element: <AdminCareersPage />,
                 },
                 {
                   path: "adminBlogs",
